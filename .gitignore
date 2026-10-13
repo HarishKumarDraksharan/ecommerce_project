@@ -1,0 +1,99 @@
+# ========================
+# ShopSphere .gitignore
+# ========================
+
+# ---- Java / Maven ----
+backend/target/
+backend/*.jar
+backend/*.war
+backend/*.ear
+backend/.mvn/wrapper/maven-wrapper.jar
+!backend/.mvn/wrapper/maven-wrapper.properties
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.idea/
+backend/*.iml
+backend/*.ipr
+backend/*.iws
+
+# ---- Spring Boot ----
+backend/HELP.md
+backend/.sts4-cache
+
+# ---- Node / NPM ----
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.cache/
+frontend/.parcel-cache/
+frontend/coverage/
+frontend/.env.local
+frontend/.env.production
+frontend/.env.development
+
+# ---- Environment variables (NEVER commit secrets) ----
+.env
+.env.local
+.env.production
+.env.staging
+*.env
+
+# Vagrant local state
+.vagrant/
+
+# ---- Docker ----
+.dockerignore
+docker-compose.override.yml
+
+# ---- IDE ----
+.idea/
+*.iml
+.vscode/settings.json
+.vscode/launch.json
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ---- Logs ----
+*.log
+logs/
+*.log.*
+
+# ---- OS ----
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ---- Build artifacts ----
+*.class
+*.war
+*.jar
+*.zip
+*.tar.gz
+
+# ---- Coverage reports ----
+backend/target/site/
+frontend/coverage/
+
+# ---- Upload directories ----
+backend/uploads/
+
+# ---- Gradle (if switching) ----
+.gradle/
+
+# ---- Local Dev Envs & Scripts ----
+.maven/
+apache-maven-*/
+jdk-*/
+.mysql_data/
+my.ini
+run.ps1
+server.js
+metadata.json
