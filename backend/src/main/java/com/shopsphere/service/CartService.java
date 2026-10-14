@@ -1,6 +1,7 @@
 package com.shopsphere.service;
 
 import com.shopsphere.entity.*;
+import com.shopsphere.dto.response.CartResponse;
 import com.shopsphere.exception.BadRequestException;
 import com.shopsphere.exception.ResourceNotFoundException;
 import com.shopsphere.repository.*;
@@ -41,9 +42,15 @@ public class CartService {
 
     // ── Get Cart ─────────────────────────────────────────────
 
+    @Transactional
     public Cart getCartByUserId(Long userId) {
         return cartRepository.findByUserId(userId)
                 .orElseGet(() -> createCartForUser(userId));
+    }
+
+    @Transactional
+    public CartResponse getCartResponseByUserId(Long userId) {
+        return CartResponse.from(getCartByUserId(userId));
     }
 
     // ── Add Item ─────────────────────────────────────────────
@@ -86,6 +93,11 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    @Transactional
+    public CartResponse addItemResponse(Long userId, Long productId, int quantity) {
+        return CartResponse.from(addItem(userId, productId, quantity));
+    }
+
     // ── Update Item Quantity ──────────────────────────────────
 
     @Transactional
@@ -109,6 +121,11 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    @Transactional
+    public CartResponse updateItemQuantityResponse(Long userId, Long cartItemId, int quantity) {
+        return CartResponse.from(updateItemQuantity(userId, cartItemId, quantity));
+    }
+
     // ── Remove Item ──────────────────────────────────────────
 
     @Transactional
@@ -116,6 +133,11 @@ public class CartService {
         Cart cart = getCartByUserId(userId);
         cart.getItems().removeIf(i -> i.getId().equals(cartItemId));
         return cartRepository.save(cart);
+    }
+
+    @Transactional
+    public CartResponse removeItemResponse(Long userId, Long cartItemId) {
+        return CartResponse.from(removeItem(userId, cartItemId));
     }
 
     // ── Clear Cart ───────────────────────────────────────────
@@ -155,6 +177,11 @@ public class CartService {
     }
 
     @Transactional
+    public CartResponse applyCouponResponse(Long userId, String couponCode) {
+        return CartResponse.from(applyCoupon(userId, couponCode));
+    }
+
+    @Transactional
     public Cart removeCoupon(Long userId) {
         Cart cart = getCartByUserId(userId);
         cart.setCoupon(null);
@@ -162,8 +189,14 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    @Transactional
+    public CartResponse removeCouponResponse(Long userId) {
+        return CartResponse.from(removeCoupon(userId));
+    }
+
     // ── Cart Summary Calculation ──────────────────────────────
 
+    @Transactional
     public CartSummary calculateSummary(Long userId) {
         Cart cart = getCartByUserId(userId);
 
@@ -209,7 +242,6 @@ public class CartService {
         return discount.min(subtotal);
     }
 
-    @Transactional
     private Cart createCartForUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId));

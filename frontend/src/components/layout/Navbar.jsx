@@ -9,6 +9,7 @@ import { useAuth }  from '@context/AuthContext'
 import { useCart }  from '@context/CartContext'
 import { useTheme } from '@context/ThemeContext'
 import { useCompare } from '@context/CompareContext'
+import ProductImage, { getProductImageSources } from '@components/product/ProductImage'
 
 export default function Navbar({ transparent = false }) {
   const navigate     = useNavigate()
@@ -161,8 +162,8 @@ export default function Navbar({ transparent = false }) {
                       onClick={() => handleSelectSuggestion(prod.slug || prod.id)}
                       className="w-full flex items-center gap-3 p-2.5 hover:bg-dark-50 dark:hover:bg-dark-800/80 text-left transition-colors"
                     >
-                      <img
-                        src={prod.thumbnailUrl || prod.images?.[0]}
+                      <ProductImage
+                        sources={getProductImageSources(prod)}
                         alt={prod.name}
                         className="w-10 h-10 object-cover rounded-md bg-dark-100 dark:bg-dark-800 flex-shrink-0"
                       />

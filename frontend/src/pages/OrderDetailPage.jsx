@@ -7,6 +7,7 @@ import {
   Printer, MapPin, CreditCard, X
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import ProductImage, { getProductImageSources } from '@components/product/ProductImage'
 
 export default function OrderDetailPage() {
   const { id } = useParams()
@@ -159,8 +160,8 @@ export default function OrderDetailPage() {
             <div className="divide-y divide-dark-100 dark:divide-dark-800">
               {order.items?.map((item) => (
                 <div key={item.id} className="py-4 flex items-center gap-4">
-                  <img
-                    src={item.productThumbnail || item.product?.thumbnailUrl || '/placeholder.jpg'}
+                  <ProductImage
+                    sources={[item.productThumbnail, ...getProductImageSources(item.product)]}
                     alt={item.productName || item.product?.name}
                     className="w-16 h-16 object-contain rounded-xl bg-dark-50 dark:bg-dark-800 p-2 border border-dark-100 dark:border-dark-700 flex-shrink-0"
                   />

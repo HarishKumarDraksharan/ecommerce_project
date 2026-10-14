@@ -1,12 +1,13 @@
 package com.shopsphere.controller;
 
 import com.shopsphere.dto.response.ApiResponse;
-import com.shopsphere.dto.response.ProductResponse;
+import com.shopsphere.dto.response.ProductMediaResponse;
 import com.shopsphere.entity.Product;
 import com.shopsphere.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -96,6 +97,18 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success(productService.getBestSellers()));
     }
 
+    @GetMapping("/trending")
+    @Operation(summary = "Get trending products for the homepage")
+    public ResponseEntity<ApiResponse<List<Product>>> getTrending() {
+        return ResponseEntity.ok(ApiResponse.success(productService.getTrendingProducts()));
+    }
+
+    @GetMapping("/deals")
+    @Operation(summary = "Get discounted products for the homepage")
+    public ResponseEntity<ApiResponse<List<Product>>> getDeals() {
+        return ResponseEntity.ok(ApiResponse.success(productService.getDealProducts()));
+    }
+
     @GetMapping("/brands")
     @Operation(summary = "Get all available brands")
     public ResponseEntity<ApiResponse<List<String>>> getBrands() {
@@ -123,6 +136,16 @@ public class ProductController {
             @RequestPart(value = "images", required = false) List<MultipartFile> images) {
         return ResponseEntity.ok(ApiResponse.success("Product updated",
                 productService.updateProduct(id, product, images)));
+    }
+
+    @PostMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
+    @Operation(summary = "Add images to a product without changing other product fields (Admin)")
+    public ResponseEntity<ApiResponse<ProductMediaResponse>> addProductImages(
+            @PathVariable Long id,
+            @RequestPart("images") List<MultipartFile> images) {
+        return ResponseEntity.ok(ApiResponse.success("Product images added",
+                productService.addProductImages(id, images)));
     }
 
     @DeleteMapping("/{id}")

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { orderAPI } from '@services/api'
 import { Package, Truck, Clock, CheckCircle2, AlertCircle, ArrowRight, ShoppingBag, Eye, Search } from 'lucide-react'
+import ProductImage, { getProductImageSources } from '@components/product/ProductImage'
 
 export default function OrderHistoryPage() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -144,8 +145,8 @@ export default function OrderHistoryPage() {
                 <div className="flex items-center gap-3 overflow-x-auto py-1">
                   {order.items?.slice(0, 4).map((item, idx) => (
                     <div key={idx} className="flex items-center gap-2 bg-dark-50 dark:bg-dark-800/60 p-2 rounded-xl border border-dark-100 dark:border-dark-700">
-                      <img
-                        src={item.productThumbnail || item.product?.thumbnailUrl || '/placeholder.jpg'}
+                      <ProductImage
+                        sources={[item.productThumbnail, ...getProductImageSources(item.product)]}
                         alt={item.productName || item.product?.name}
                         className="w-10 h-10 object-contain rounded-lg bg-white dark:bg-dark-900 p-1"
                       />

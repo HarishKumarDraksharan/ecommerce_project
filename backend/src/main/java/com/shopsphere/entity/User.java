@@ -1,5 +1,6 @@
 package com.shopsphere.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shopsphere.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -104,6 +105,7 @@ public class User {
     private List<Address> addresses = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

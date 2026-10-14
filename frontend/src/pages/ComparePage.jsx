@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Scale, Trash2, ShoppingCart, Star, ArrowLeft, Check, X } from 'lucide-react'
 import { useCompare } from '@context/CompareContext'
 import { useCart } from '@context/CartContext'
+import ProductImage, { getProductImageSources } from '@components/product/ProductImage'
 
 export default function ComparePage() {
   const { compareList, removeFromCompare, clearCompare } = useCompare()
@@ -64,8 +65,8 @@ export default function ComparePage() {
                     >
                       <X size={14} />
                     </button>
-                    <img
-                      src={item.thumbnailUrl || item.images?.[0]}
+                    <ProductImage
+                      sources={getProductImageSources(item)}
                       alt={item.name}
                       className="w-32 h-32 object-contain mx-auto mb-3 rounded-lg bg-dark-50 dark:bg-dark-800 p-2"
                     />

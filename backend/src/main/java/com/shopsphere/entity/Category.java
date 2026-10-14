@@ -1,5 +1,8 @@
 package com.shopsphere.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,6 +19,7 @@ import java.util.List;
  * Category entity – top-level product groupings (e.g. Electronics, Clothing).
  */
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "categories", indexes = {
         @Index(name = "idx_category_slug", columnList = "slug", unique = true)
 })
@@ -51,10 +55,12 @@ public class Category {
     private Integer sortOrder = 0;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("category-subcategories")
     @Builder.Default
     private List<SubCategory> subCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     @Builder.Default
     private List<Product> products = new ArrayList<>();
 

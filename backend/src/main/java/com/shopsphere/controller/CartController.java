@@ -1,7 +1,7 @@
 package com.shopsphere.controller;
 
 import com.shopsphere.dto.response.ApiResponse;
-import com.shopsphere.entity.Cart;
+import com.shopsphere.dto.response.CartResponse;
 import com.shopsphere.repository.UserRepository;
 import com.shopsphere.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,10 +27,10 @@ public class CartController {
 
     @GetMapping
     @Operation(summary = "Get the current user's cart")
-    public ResponseEntity<ApiResponse<Cart>> getCart(
+    public ResponseEntity<ApiResponse<CartResponse>> getCart(
             @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = getUserId(userDetails);
-        return ResponseEntity.ok(ApiResponse.success(cartService.getCartByUserId(userId)));
+        return ResponseEntity.ok(ApiResponse.success(cartService.getCartResponseByUserId(userId)));
     }
 
     @GetMapping("/summary")
@@ -43,34 +43,34 @@ public class CartController {
 
     @PostMapping("/items")
     @Operation(summary = "Add item to cart")
-    public ResponseEntity<ApiResponse<Cart>> addItem(
+    public ResponseEntity<ApiResponse<CartResponse>> addItem(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam Long productId,
             @RequestParam(defaultValue = "1") int quantity) {
         Long userId = getUserId(userDetails);
         return ResponseEntity.ok(ApiResponse.success("Item added to cart",
-                cartService.addItem(userId, productId, quantity)));
+                cartService.addItemResponse(userId, productId, quantity)));
     }
 
     @PutMapping("/items/{cartItemId}")
     @Operation(summary = "Update cart item quantity")
-    public ResponseEntity<ApiResponse<Cart>> updateQuantity(
+    public ResponseEntity<ApiResponse<CartResponse>> updateQuantity(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long cartItemId,
             @RequestParam int quantity) {
         Long userId = getUserId(userDetails);
         return ResponseEntity.ok(ApiResponse.success("Cart updated",
-                cartService.updateItemQuantity(userId, cartItemId, quantity)));
+                cartService.updateItemQuantityResponse(userId, cartItemId, quantity)));
     }
 
     @DeleteMapping("/items/{cartItemId}")
     @Operation(summary = "Remove item from cart")
-    public ResponseEntity<ApiResponse<Cart>> removeItem(
+    public ResponseEntity<ApiResponse<CartResponse>> removeItem(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long cartItemId) {
         Long userId = getUserId(userDetails);
         return ResponseEntity.ok(ApiResponse.success("Item removed",
-                cartService.removeItem(userId, cartItemId)));
+                cartService.removeItemResponse(userId, cartItemId)));
     }
 
     @DeleteMapping
@@ -84,21 +84,21 @@ public class CartController {
 
     @PostMapping("/coupon")
     @Operation(summary = "Apply a coupon code to cart")
-    public ResponseEntity<ApiResponse<Cart>> applyCoupon(
+    public ResponseEntity<ApiResponse<CartResponse>> applyCoupon(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam String code) {
         Long userId = getUserId(userDetails);
         return ResponseEntity.ok(ApiResponse.success("Coupon applied",
-                cartService.applyCoupon(userId, code)));
+                cartService.applyCouponResponse(userId, code)));
     }
 
     @DeleteMapping("/coupon")
     @Operation(summary = "Remove applied coupon from cart")
-    public ResponseEntity<ApiResponse<Cart>> removeCoupon(
+    public ResponseEntity<ApiResponse<CartResponse>> removeCoupon(
             @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = getUserId(userDetails);
         return ResponseEntity.ok(ApiResponse.success("Coupon removed",
-                cartService.removeCoupon(userId)));
+                cartService.removeCouponResponse(userId)));
     }
 
     private Long getUserId(UserDetails userDetails) {

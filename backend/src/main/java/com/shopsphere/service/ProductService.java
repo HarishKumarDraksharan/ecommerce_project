@@ -4,6 +4,10 @@ import com.shopsphere.entity.Product;
 import com.shopsphere.exception.BadRequestException;
 import com.shopsphere.exception.ResourceNotFoundException;
 import com.shopsphere.repository.ProductRepository;
+import com.shopsphere.repository.SubCategoryRepository;
+import com.shopsphere.entity.SubCategory;
+import com.shopsphere.entity.Category;
+import com.shopsphere.dto.response.ProductMediaResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +30,10 @@ import java.util.*;
 @Transactional(readOnly = true)
 public class ProductService {
 
+    private static final int HOMEPAGE_PRODUCT_LIMIT = 5;
+
     private final ProductRepository productRepository;
+    private final SubCategoryRepository subCategoryRepository;
     private final FileStorageService fileStorageService;
 
     @Value("${app.pagination.default-page-size:12}")
@@ -78,6 +85,14 @@ public class ProductService {
         return productRepository.findByBestSellerTrueAndActiveTrueOrderByTotalSoldDesc();
     }
 
+    public List<Product> getTrendingProducts() {
+        return productRepository.findTrendingProducts(PageRequest.of(0, HOMEPAGE_PRODUCT_LIMIT));
+    }
+
+    public List<Product> getDealProducts() {
+        return productRepository.findDealProducts(PageRequest.of(0, HOMEPAGE_PRODUCT_LIMIT));
+    }
+
     public List<Product> getTopSellingProducts(int limit) {
         return productRepository.findTopSellingProducts(PageRequest.of(0, limit));
     }
@@ -97,6 +112,8 @@ public class ProductService {
         if (productRepository.existsBySku(product.getSku())) {
             throw new BadRequestException("SKU already exists: " + product.getSku());
         }
+
+        product.setSubCategory(resolveSubCategory(product.getCategory(), product.getSubCategory()));
 
         if (images != null && !images.isEmpty()) {
             List<String> imageUrls = fileStorageService.storeFiles(images);
@@ -119,6 +136,8 @@ public class ProductService {
     @Transactional
     public Product updateProduct(Long id, Product updatedProduct, List<MultipartFile> newImages) {
         Product existing = getProductById(id);
+        SubCategory subCategory = resolveSubCategory(
+                updatedProduct.getCategory(), updatedProduct.getSubCategory());
 
         existing.setName(updatedProduct.getName());
         existing.setDescription(updatedProduct.getDescription());
@@ -132,7 +151,7 @@ public class ProductService {
         existing.setBestSeller(updatedProduct.isBestSeller());
         existing.setActive(updatedProduct.isActive());
         existing.setCategory(updatedProduct.getCategory());
-        existing.setSubCategory(updatedProduct.getSubCategory());
+        existing.setSubCategory(subCategory);
 
         if (newImages != null && !newImages.isEmpty()) {
             List<String> newUrls = fileStorageService.storeFiles(newImages);
@@ -140,6 +159,54 @@ public class ProductService {
         }
 
         return productRepository.save(existing);
+    }
+
+    @Transactional
+    public ProductMediaResponse addProductImages(Long id, List<MultipartFile> images) {
+        List<MultipartFile> nonEmptyImages = images == null
+                ? List.of()
+                : images.stream()
+                        .filter(Objects::nonNull)
+                        .filter(image -> !image.isEmpty())
+                        .toList();
+        if (nonEmptyImages.isEmpty()) {
+            throw new BadRequestException("At least one non-empty image is required");
+        }
+
+        Product existing = getProductById(id);
+        List<String> uploadedImageUrls = fileStorageService.storeFiles(nonEmptyImages);
+        if (uploadedImageUrls.isEmpty()) {
+            throw new BadRequestException("At least one non-empty image is required");
+        }
+
+        if (existing.getImages() == null) {
+            existing.setImages(new ArrayList<>());
+        }
+        existing.getImages().addAll(uploadedImageUrls);
+        if (existing.getThumbnailUrl() == null || existing.getThumbnailUrl().isBlank()) {
+            existing.setThumbnailUrl(uploadedImageUrls.get(0));
+        }
+
+        Product saved = productRepository.save(existing);
+        log.info("Product images added: {} (ID: {})", saved.getName(), saved.getId());
+        return ProductMediaResponse.from(saved);
+    }
+
+    private SubCategory resolveSubCategory(Category category, SubCategory subCategory) {
+        if (subCategory == null) {
+            return null;
+        }
+        if (category == null || category.getId() == null || subCategory.getId() == null) {
+            throw new BadRequestException("A category and persisted subcategory are required");
+        }
+
+        SubCategory persistedSubCategory = subCategoryRepository.findById(subCategory.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Subcategory", subCategory.getId()));
+        if (persistedSubCategory.getCategory() == null
+                || !category.getId().equals(persistedSubCategory.getCategory().getId())) {
+            throw new BadRequestException("Subcategory must belong to the selected category");
+        }
+        return persistedSubCategory;
     }
 
     @Transactional

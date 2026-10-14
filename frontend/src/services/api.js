@@ -87,6 +87,9 @@ api.interceptors.response.use(
 // API Service Functions
 // ═══════════════════════════════════════════════════════════════
 
+export const unwrapApiResponse = (response) =>
+  response?.success === true ? response.data : response
+
 // ── Auth ─────────────────────────────────────────────────────
 export const authAPI = {
   register:       (data) => api.post('/auth/register', data).then(r => r.data),
@@ -100,11 +103,11 @@ export const authAPI = {
 
 // ── Products ──────────────────────────────────────────────────
 export const productAPI = {
-  getAll:        (params) => api.get('/products', { params }),
+  getAll:        (params) => api.get('/products', { params }).then(unwrapApiResponse),
   getById:       (id)     => api.get(`/products/${id}`),
   getBySlug:     (slug)   => api.get(`/products/slug/${slug}`),
-  search:        (params) => api.get('/products/search', { params }),
-  getByCategory: (id, p)  => api.get(`/products/category/${id}`, { params: p }),
+  search:        (params) => api.get('/products/search', { params }).then(unwrapApiResponse),
+  getByCategory: (id, p)  => api.get(`/products/category/${id}`, { params: p }).then(unwrapApiResponse),
   getFeatured:   ()       => api.get('/products/featured').then(r => r.data || r),
   getBestSellers:()       => api.get('/products/best-sellers').then(r => r.data || r),
   getTrending:   ()       => api.get('/products/trending').then(r => r.data || r),

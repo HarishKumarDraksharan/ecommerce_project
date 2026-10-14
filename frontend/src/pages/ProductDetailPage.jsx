@@ -14,6 +14,7 @@ import ReviewSection from '@components/review/ReviewSection'
 import Breadcrumb from '@components/ui/Breadcrumb'
 import RatingStars from '@components/ui/RatingStars'
 import ProductDetailSkeleton from '@components/product/ProductDetailSkeleton'
+import ProductImage from '@components/product/ProductImage'
 
 export default function ProductDetailPage() {
   const { slug }        = useParams()
@@ -57,7 +58,7 @@ export default function ProductDetailPage() {
     </div>
   )
 
-  const images = prod.images?.length > 0 ? prod.images : ['/placeholder.jpg']
+  const images = prod.images?.length > 0 ? prod.images : prod.thumbnailUrl ? [prod.thumbnailUrl] : []
   const discountPct = prod.discountPercent > 0 ? Math.round(prod.discountPercent) : null
   const inStock = prod.stockQuantity > 0
 
@@ -88,16 +89,20 @@ export default function ProductDetailPage() {
           <div>
             <div className="relative overflow-hidden rounded-2xl bg-dark-50 dark:bg-dark-800 aspect-square">
               <AnimatePresence mode="wait">
-                <motion.img
+                <motion.div
                   key={imgIdx}
-                  src={images[imgIdx]}
-                  alt={prod.name}
                   className="w-full h-full object-cover"
                   initial={{ opacity: 0, scale: 1.02 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                />
+                >
+                  <ProductImage
+                    sources={[images[imgIdx], prod.thumbnailUrl]}
+                    alt={prod.name}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
               </AnimatePresence>
 
               {discountPct && (
@@ -135,7 +140,11 @@ export default function ProductDetailPage() {
                     className={`flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all
                                 ${i === imgIdx ? 'border-primary-500 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <ProductImage
+                      sources={[img, prod.thumbnailUrl]}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
                   </button>
                 ))}
               </div>

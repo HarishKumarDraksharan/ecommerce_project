@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Trash2, Minus, Plus, ShoppingBag, Tag, ArrowRight, AlertCircle } from 'lucide-react'
 import { useCart } from '@context/CartContext'
 import { motion, AnimatePresence } from 'framer-motion'
+import ProductImage, { getProductImageSources } from '@components/product/ProductImage'
 
 function CartItemRow({ item, onUpdate, onRemove }) {
   const [updating, setUpdating] = useState(false)
@@ -22,7 +23,7 @@ function CartItemRow({ item, onUpdate, onRemove }) {
       className="flex gap-4 py-4 border-b border-dark-100 dark:border-dark-700 last:border-0"
     >
       <Link to={`/products/${item.product?.slug}`} className="flex-shrink-0">
-        <img src={item.product?.thumbnailUrl || '/placeholder.jpg'} alt={item.product?.name}
+        <ProductImage sources={getProductImageSources(item.product)} alt={item.product?.name}
           className="w-20 h-20 object-cover rounded-xl bg-dark-100" />
       </Link>
       <div className="flex-1 min-w-0">

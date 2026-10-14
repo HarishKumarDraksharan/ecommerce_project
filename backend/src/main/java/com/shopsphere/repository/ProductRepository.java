@@ -33,6 +33,16 @@ public interface ProductRepository extends JpaRepository<Product, Long>,
 
     List<Product> findByBestSellerTrueAndActiveTrueOrderByTotalSoldDesc();
 
+    @Query("SELECT p FROM Product p WHERE p.active = true ORDER BY p.totalSold DESC")
+    List<Product> findTrendingProducts(Pageable pageable);
+
+    @Query("""
+        SELECT p FROM Product p
+        WHERE p.active = true AND p.discountPercent > 0
+        ORDER BY p.discountPercent DESC, p.totalSold DESC
+        """)
+    List<Product> findDealProducts(Pageable pageable);
+
     @Query("""
         SELECT p FROM Product p
         WHERE p.active = true
