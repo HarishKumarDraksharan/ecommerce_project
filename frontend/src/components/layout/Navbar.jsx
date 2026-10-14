@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Search, ShoppingCart, Heart, User, Sun, Moon, Menu, X,
@@ -183,7 +183,7 @@ export default function Navbar({ transparent = false }) {
                     type="submit"
                     className="w-full p-2.5 text-center text-xs font-semibold text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/40 transition-colors"
                   >
-                    View all results for "{q}"
+                    View all results for &quot;{q}&quot;
                   </button>
                 </motion.div>
               )}

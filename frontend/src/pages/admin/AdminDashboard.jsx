@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { adminAPI } from '@services/api'
 import {
   Users, ShoppingBag, DollarSign, Package, TrendingUp, TrendingDown,
-  Activity, ArrowUp, AlertTriangle, ShoppingCart
+  Activity, ArrowUp, AlertTriangle
 } from 'lucide-react'
 import {
   Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement,
@@ -113,7 +113,7 @@ export default function AdminDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-black dark:text-white">Dashboard</h1>
-          <p className="text-dark-500 dark:text-dark-400 text-sm">Welcome back! Here's what's happening.</p>
+          <p className="text-dark-500 dark:text-dark-400 text-sm">Welcome back! Here&apos;s what&apos;s happening.</p>
         </div>
         <span className="badge badge-success">Live</span>
       </div>

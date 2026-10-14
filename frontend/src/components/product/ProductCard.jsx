@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Heart, ShoppingCart, Star, Eye, Scale } from 'lucide-react'
+import { Heart, ShoppingCart, Eye, Scale } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useCart } from '@context/CartContext'

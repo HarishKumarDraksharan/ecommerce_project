@@ -179,7 +179,7 @@ export default function LandingPage() {
           <FadeUp>
             <div className="text-center mb-12">
               <h2 className="section-title">Why Choose ShopSphere?</h2>
-              <p className="section-subtitle">We're committed to the best shopping experience</p>
+              <p className="section-subtitle">We&apos;re committed to the best shopping experience</p>
             </div>
           </FadeUp>
 

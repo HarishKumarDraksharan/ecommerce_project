@@ -13,12 +13,6 @@ export function CartProvider({ children }) {
 
   const itemCount = cart?.items?.reduce((sum, i) => sum + i.quantity, 0) ?? 0
 
-  // Fetch cart whenever user logs in
-  useEffect(() => {
-    if (user) fetchCart()
-    else { setCart(null); setSummary(null) }
-  }, [user])
-
   const fetchCart = useCallback(async () => {
     if (!user) return
     try {
@@ -36,6 +30,22 @@ export function CartProvider({ children }) {
     }
   }, [user])
 
+  const refreshSummary = useCallback(async () => {
+    try {
+      const s = await cartAPI.getSummary()
+      setSummary(s)
+    } catch (e) {
+      console.error('Failed to refresh cart summary:', e)
+      toast.error('Failed to refresh cart summary')
+    }
+  }, [])
+
+  // Fetch cart whenever user logs in
+  useEffect(() => {
+    if (user) fetchCart()
+    else { setCart(null); setSummary(null) }
+  }, [user, fetchCart])
+
   const addToCart = useCallback(async (productId, quantity = 1) => {
     if (!user) { toast.error('Please login to add items to cart'); return false }
     try {
@@ -48,7 +58,7 @@ export function CartProvider({ children }) {
       toast.error(e.response?.data?.message || 'Failed to add to cart')
       return false
     }
-  }, [user])
+  }, [user, refreshSummary])
 
   const updateQuantity = useCallback(async (cartItemId, quantity) => {
     try {
@@ -58,7 +68,7 @@ export function CartProvider({ children }) {
     } catch (e) {
       toast.error('Failed to update quantity')
     }
-  }, [])
+  }, [refreshSummary])
 
   const removeFromCart = useCallback(async (cartItemId) => {
     try {
@@ -66,10 +76,11 @@ export function CartProvider({ children }) {
       setCart(updated)
       await refreshSummary()
       toast.success('Item removed')
-    } catch {
+    } catch (e) {
+      console.error('Failed to remove cart item:', e)
       toast.error('Failed to remove item')
     }
-  }, [])
+  }, [refreshSummary])
 
   const applyCoupon = useCallback(async (code) => {
     try {
@@ -82,7 +93,7 @@ export function CartProvider({ children }) {
       toast.error(e.response?.data?.message || 'Invalid coupon')
       return false
     }
-  }, [])
+  }, [refreshSummary])
 
   const removeCoupon = useCallback(async () => {
     try {
@@ -90,23 +101,22 @@ export function CartProvider({ children }) {
       setCart(updated)
       await refreshSummary()
       toast.success('Coupon removed')
-    } catch {}
-  }, [])
+    } catch (e) {
+      console.error('Failed to remove coupon:', e)
+      toast.error(e.response?.data?.message || 'Failed to remove coupon')
+    }
+  }, [refreshSummary])
 
   const clearCart = useCallback(async () => {
     try {
       await cartAPI.clearCart()
       setCart(null)
       setSummary(null)
-    } catch {}
+    } catch (e) {
+      console.error('Failed to clear cart:', e)
+      toast.error('Failed to clear cart')
+    }
   }, [])
-
-  const refreshSummary = async () => {
-    try {
-      const s = await cartAPI.getSummary()
-      setSummary(s)
-    } catch {}
-  }
 
   return (
     <CartContext.Provider value={{

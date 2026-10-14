@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, Package, Tag, ShoppingBag, Users,
-  Ticket, BarChart3, Menu, X, LogOut, Zap, ChevronRight
+  Ticket, BarChart3, Menu, LogOut, Zap, ChevronRight
 } from 'lucide-react'
 import { useAuth }  from '@context/AuthContext'
 import { useTheme } from '@context/ThemeContext'
@@ -24,9 +24,6 @@ export default function AdminLayout() {
   const { isDark, toggleTheme }       = useTheme()
   const { pathname }                  = useLocation()
   const navigate                      = useNavigate()
-
-  const isActive = (to, exact) => exact ? pathname === to : pathname.startsWith(to) && to !== '/admin'
-    || (exact && pathname === '/admin')
 
   return (
     <div className="flex h-screen bg-dark-50 dark:bg-dark-950 overflow-hidden">

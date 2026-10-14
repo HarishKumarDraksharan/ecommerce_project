@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Code2, Github, Linkedin, Mail, Cpu, Layers, Sparkles, CheckCircle2, Award, Terminal, ArrowRight } from 'lucide-react'
+import { Code2, Github, Linkedin, Mail, Sparkles, CheckCircle2, Award, Terminal, ArrowRight } from 'lucide-react'
 
 export default function TeamPage() {
   const teamMembers = [

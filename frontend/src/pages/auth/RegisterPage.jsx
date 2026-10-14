@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -26,7 +26,6 @@ export default function RegisterPage() {
   const [showPwd, setShowPwd]   = useState(false)
   const [success, setSuccess]   = useState(false)
   const { register: authRegister } = useAuth()
-  const navigate                = useNavigate()
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: yupResolver(schema),
@@ -56,7 +55,7 @@ export default function RegisterPage() {
           </div>
           <h2 className="text-2xl font-black dark:text-white mb-2">Check Your Email!</h2>
           <p className="text-dark-500 mb-6">
-            We've sent a verification link to your email address. Click the link to activate your account.
+            We&apos;ve sent a verification link to your email address. Click the link to activate your account.
           </p>
           <Link to="/login" className="btn-primary btn-lg">Go to Login</Link>
         </div>

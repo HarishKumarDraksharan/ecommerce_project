@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from 'react-router-dom'
-import { AlertTriangle, Home, ShoppingCart, RefreshCw } from 'lucide-react'
+import { AlertTriangle, ShoppingCart, RefreshCw } from 'lucide-react'
 
 export default function PaymentFailurePage() {
   const [params] = useSearchParams()

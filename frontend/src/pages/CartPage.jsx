@@ -89,7 +89,7 @@ export default function CartPage() {
         <ShoppingBag size={40} className="text-dark-400" />
       </div>
       <h2 className="text-2xl font-bold mb-2 dark:text-white">Your cart is empty</h2>
-      <p className="text-dark-500 mb-8">Looks like you haven't added anything yet.</p>
+      <p className="text-dark-500 mb-8">Looks like you haven&apos;t added anything yet.</p>
       <Link to="/products" className="btn-primary btn-lg">
         Continue Shopping
         <ArrowRight size={18} />

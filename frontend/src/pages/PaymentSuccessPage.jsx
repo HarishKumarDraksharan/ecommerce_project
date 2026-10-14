@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { CheckCircle, Home, ShoppingBag, ArrowRight } from 'lucide-react'
+import { CheckCircle, Home, ArrowRight } from 'lucide-react'
 import { useCart } from '@context/CartContext'
 
 export default function PaymentSuccessPage() {
@@ -11,7 +11,7 @@ export default function PaymentSuccessPage() {
   // Refresh cart state to ensure it is cleared
   useEffect(() => {
     fetchCart()
-  }, [])
+  }, [fetchCart])
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center bg-dark-50 dark:bg-dark-950 py-12 px-4">

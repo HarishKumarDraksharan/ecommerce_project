@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { userAPI } from '@services/api'
 import { useAuth } from '@context/AuthContext'
 import {
-  User, Mail, Phone, Lock, MapPin, Plus, Trash2, Edit, CheckCircle2,
-  Package, Heart, Shield, Key, ArrowRight, Save, Clock
+  User, Mail, Lock, MapPin, Plus,
+  Package, Heart, Shield, Key, Save
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -37,7 +37,7 @@ export default function ProfilePage() {
   })
 
   // Queries
-  const { data: profileResp, isLoading: loadingProfile } = useQuery({
+  useQuery({
     queryKey: ['user-profile'],
     queryFn: userAPI.getProfile,
     onSuccess: (res) => {

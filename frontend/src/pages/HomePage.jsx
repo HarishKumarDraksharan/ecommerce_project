@@ -331,7 +331,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-xs sm:text-sm text-dark-700 dark:text-dark-300 leading-relaxed mb-6 italic">
-                  "{review.comment}"
+                  &ldquo;{review.comment}&rdquo;
                 </p>
                 <div className="flex items-center gap-3 pt-4 border-t border-dark-100 dark:border-dark-800">
                   <div className="w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 font-bold text-xs flex items-center justify-center">

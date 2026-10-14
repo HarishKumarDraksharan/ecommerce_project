@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { Scale, Trash2, ShoppingCart, Star, ArrowLeft, Check, X } from 'lucide-react'
 import { useCompare } from '@context/CompareContext'
 import { useCart } from '@context/CartContext'

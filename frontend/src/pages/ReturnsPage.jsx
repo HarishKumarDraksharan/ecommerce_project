@@ -10,7 +10,7 @@ const RETURN_STEPS = [
   {
     step: '02',
     title: 'Schedule Pickup',
-    desc: 'We'll arrange a free courier pickup from your address within 24–48 hours of your request.',
+    desc: "We'll arrange a free courier pickup from your address within 24–48 hours of your request.",
   },
   {
     step: '03',
@@ -37,7 +37,7 @@ const POLICY_CARDS = [
     iconBg: 'bg-blue-50 dark:bg-blue-950/40',
     iconColor: 'text-blue-500',
     title: 'Instant Replacement',
-    desc: 'Prefer a replacement over a refund? We'll dispatch the new unit immediately after completing your return pickup.',
+    desc: "Prefer a replacement over a refund? We'll dispatch the new unit immediately after completing your return pickup.",
   },
   {
     icon: CreditCard,
@@ -91,7 +91,7 @@ export default function ReturnsPage() {
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Returns & Refund Policy</h1>
           <p className="text-gray-400 mt-2 text-sm leading-relaxed">
-            Hassle-free returns and fast refunds. Here's everything you need to know.
+            Hassle-free returns and fast refunds. Here&apos;s everything you need to know.
           </p>
         </div>
       </div>

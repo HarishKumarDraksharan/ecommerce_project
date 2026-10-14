@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { orderAPI } from '@services/api'
 import {
   Package, Truck, CheckCircle2, Clock, AlertCircle, ArrowLeft,
-  Printer, Download, MapPin, CreditCard, ShieldCheck, Zap, RefreshCw, X
+  Printer, MapPin, CreditCard, X
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -118,7 +118,6 @@ export default function OrderDetailPage() {
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 relative">
             {steps.map((step, idx) => {
               const isCompleted = currentIdx >= idx
-              const isCurrent = statusOrder[currentIdx] === step.key
               const StepIcon = step.icon
 
               return (

@@ -1,4 +1,4 @@
-import { Zap, Award, Users, ShieldCheck, HeartHandshake } from 'lucide-react'
+import { Zap, ShieldCheck, HeartHandshake } from 'lucide-react'
 
 const TEAM_MEMBERS = [
   { name: 'Member 1', role: 'Frontend UI Lead', desc: 'Crafting responsive interfaces, search filters, and smooth animations.', emoji: '🎨' },

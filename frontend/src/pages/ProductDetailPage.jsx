@@ -3,16 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  ShoppingCart, Heart, Share2, Star, Truck, Shield, RefreshCw,
+  ShoppingCart, Heart, Share2, Truck, Shield, RefreshCw,
   ChevronLeft, ChevronRight, Minus, Plus, Check, AlertTriangle, Scale
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { productAPI } from '@services/api'
 import { useCart } from '@context/CartContext'
-import { useAuth } from '@context/AuthContext'
 import { useCompare } from '@context/CompareContext'
 import ReviewSection from '@components/review/ReviewSection'
-import ProductCard from '@components/product/ProductCard'
 import Breadcrumb from '@components/ui/Breadcrumb'
 import RatingStars from '@components/ui/RatingStars'
 import ProductDetailSkeleton from '@components/product/ProductDetailSkeleton'
@@ -22,7 +20,6 @@ export default function ProductDetailPage() {
   const navigate        = useNavigate()
   const { addToCart }   = useCart()
   const { addToCompare, isInCompare } = useCompare()
-  const { user }        = useAuth()
   const [qty, setQty]   = useState(1)
   const [imgIdx, setImgIdx] = useState(0)
   const [adding, setAdding] = useState(false)

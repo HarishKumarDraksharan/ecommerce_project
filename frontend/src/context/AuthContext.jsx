@@ -14,7 +14,8 @@ export function AuthProvider({ children }) {
     if (stored) {
       try {
         setUser(JSON.parse(stored))
-      } catch {
+      } catch (error) {
+        console.error('Failed to restore saved user:', error)
         localStorage.removeItem('shopsphere_user')
       }
     }
@@ -46,7 +47,9 @@ export function AuthProvider({ children }) {
   const logout = useCallback(async () => {
     try {
       await authAPI.logout()
-    } catch {}
+    } catch (error) {
+      console.error('Failed to notify server during logout:', error)
+    }
     setUser(null)
     localStorage.removeItem('shopsphere_user')
     localStorage.removeItem('accessToken')

@@ -73,7 +73,7 @@ export default function LoginPage() {
 
           <h1 className="text-3xl font-black dark:text-white mb-2">Sign In</h1>
           <p className="text-dark-500 dark:text-dark-400 mb-8">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link to="/register" className="text-primary-500 font-semibold hover:underline">Sign up</Link>
           </p>
 
